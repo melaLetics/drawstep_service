@@ -1,0 +1,7 @@
+# Dart
+.dart_tool/
+.packages
+
+# Lokale Arbeitsordner des Build-Skripts
+.cache/
+site/
