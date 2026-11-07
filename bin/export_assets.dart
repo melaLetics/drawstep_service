@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:path/path.dart' as p;
+import 'package:topdecked_service/topdecked_service.dart';
 
 /// Kopiert das aktuelle Datenpaket als Grundbestand in die App:
 ///
@@ -41,9 +42,10 @@ void main(List<String> arguments) {
   ];
   var copied = 0;
   for (final code in codes) {
-    final icon = File(p.join(site.path, 'sets', '$code.svg'));
+    final name = setIconFileName(code);
+    final icon = File(p.join(site.path, 'sets', name));
     if (icon.existsSync()) {
-      icon.copySync(p.join(iconsOut.path, '$code.svg'));
+      icon.copySync(p.join(iconsOut.path, name));
       copied++;
     }
   }

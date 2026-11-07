@@ -12,6 +12,19 @@ import 'scryfall.dart';
 /// App-Versionen es nicht lesen können, wird sie erhöht.
 const schemaVersion = 1;
 
+/// Unter Windows reservierte Gerätenamen – solche Dateinamen sind dort
+/// nicht möglich, auch nicht mit Endung (z. B. das Set Conflux, Code `con`).
+const _windowsReserved = {
+  'con', 'prn', 'aux', 'nul',
+  'com1', 'com2', 'com3', 'com4', 'com5', 'com6', 'com7', 'com8', 'com9',
+  'lpt1', 'lpt2', 'lpt3', 'lpt4', 'lpt5', 'lpt6', 'lpt7', 'lpt8', 'lpt9',
+};
+
+/// Dateiname des Set-Symbols: `<code>.svg`, bei reservierten Namen
+/// `<code>_.svg`. Die App verwendet dieselbe Regel.
+String setIconFileName(String code) =>
+    _windowsReserved.contains(code.toLowerCase()) ? '${code}_.svg' : '$code.svg';
+
 /// Vergleicht Versionen wie `2026.11.07` oder `2026.11.07.2` numerisch.
 int compareVersions(String a, String b) {
   final pa = a.split('.');
@@ -180,7 +193,7 @@ class Site {
     iconDir.createSync(recursive: true);
     var added = 0;
     for (final code in codes) {
-      final file = File(p.join(iconDir.path, '$code.svg'));
+      final file = File(p.join(iconDir.path, setIconFileName(code)));
       final uri = sets[code]?.iconUri;
       if (file.existsSync() || uri == null) continue;
       try {

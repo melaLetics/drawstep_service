@@ -75,6 +75,12 @@ void main() {
     expect(site.freeVersion('2026.11.07'), '2026.11.07.2');
   });
 
+  test('setIconFileName weicht Windows-Gerätenamen aus', () {
+    expect(setIconFileName('lea'), 'lea.svg');
+    expect(setIconFileName('con'), 'con_.svg');
+    expect(setIconFileName('COM1'), 'COM1_.svg');
+  });
+
   test('Site.prune behält die neuesten Versionen', () {
     final dir = Directory.systemTemp.createTempSync('topdecked_prune_');
     addTearDown(() => dir.deleteSync(recursive: true));
