@@ -31,8 +31,9 @@ const excludedTypes = {
   'Contraption',
 };
 
-/// Set-Typen, die nur als Erstdruck gelten, wenn es keine andere
-/// Druckversion gibt (Promos erscheinen oft vor dem eigentlichen Set).
+/// Set-Typen, die nie als Erstdruck zählen. Gibt es eine Karte nur in
+/// solchen Sets (z. B. Convention-Karten der MagicFest-Events oder
+/// Vorschau-Promos, deren Set noch nicht erschienen ist), fliegt sie raus.
 const secondarySetTypes = {'promo'};
 
 /// Layouts, bei denen der volle Name mit `//` der übliche Kartenname ist.
@@ -207,6 +208,7 @@ class FirstPrintingCollector {
     final cards = <GameCard>[];
     _best.forEach((oracleId, candidate) {
       if (_origin[oracleId]?.setType == 'funny') return;
+      if (candidate.secondary) return; // nur als Promo erschienen
       cards.add(candidate.card);
     });
     cards.sort((a, b) {

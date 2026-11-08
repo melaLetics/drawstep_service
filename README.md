@@ -15,7 +15,8 @@ Die App bringt einen Grundbestand als Asset mit und lädt neuere Pakete über
    Emblems, Vanguard, Dungeons, Art-Series und Übergrößen. Conspiracy-Karten
    bleiben drin.
 3. Bestimmt pro Karte (`oracle_id`) den Erstdruck: frühestes Datum,
-   Haupt-Sets vor Promo-Sets.
+   Promo-Sets zählen nie. Karten, die es nur als Promo gibt (z. B.
+   Convention-Karten), fliegen raus.
 4. Schreibt den Zeitplan fort: Alle Tage bis heute + 30 bleiben unverändert,
    neue Karten werden danach zufällig eingefügt.
 5. Veröffentlicht nur, wenn sich der Inhalt geändert hat.

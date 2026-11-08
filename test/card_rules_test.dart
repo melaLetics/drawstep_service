@@ -140,15 +140,25 @@ void main() {
       expect(cards.single.scryfallId, 'a');
     });
 
-    test('Promo-Set nur, wenn es sonst nichts gibt', () {
+    test('Promo-Sets zählen nie als Erstdruck', () {
       final early = FirstPrintingCollector()
         ..add(printing(set: 'pmei', setType: 'promo', released: '2019-01-01', promo: true))
         ..add(printing(set: 'war', setType: 'expansion', released: '2019-05-03'));
       expect(early.build().single.setCode, 'war');
+    });
 
-      final only = FirstPrintingCollector()
-        ..add(printing(set: 'pmei', setType: 'promo', released: '2019-01-01', promo: true));
-      expect(only.build().single.setCode, 'pmei');
+    test('Karten, die es nur als Promo gibt (z. B. Convention-Karten), fliegen raus', () {
+      final c = FirstPrintingCollector()
+        ..add(printing(oracleId: 'maro', name: 'Convention Maro', set: 'pf24', setType: 'promo', released: '2024-01-01'))
+        ..add(printing(oracleId: 'ok', name: 'Shock'));
+      expect(c.build().map((card) => card.oracleId), ['ok']);
+    });
+
+    test('Vorschau-Promo zählt nicht, solange das Set noch nicht erschienen ist', () {
+      final c = FirstPrintingCollector(releasedUntil: '2026-11-08')
+        ..add(printing(oracleId: 'borg', name: 'Borg Queen', set: 'purl', setType: 'promo', released: '2026-10-01'))
+        ..add(printing(oracleId: 'borg', name: 'Borg Queen', set: 'trk', setType: 'expansion', released: '2026-11-13'));
+      expect(c.build(), isEmpty);
     });
 
     test('Karten mit Ursprung im Un-Set fliegen komplett raus', () {
