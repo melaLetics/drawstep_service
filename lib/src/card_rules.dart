@@ -93,6 +93,19 @@ String frontTypeLine(Map<String, dynamic> printing) {
   return line;
 }
 
+/// Gedruckte Manakosten. Bei doppelseitigen Karten die der Vorderseite,
+/// bei Split-Karten beide Hälften (`{1}{R} // {1}{U}`).
+String manaCost(Map<String, dynamic> printing) {
+  final top = printing['mana_cost'];
+  if (top is String && top.isNotEmpty) return top;
+  final faces = printing['card_faces'];
+  if (faces is! List || faces.isEmpty) return top is String ? top : '';
+  if (fullNameLayouts.contains(printing['layout'])) {
+    return faces.map((f) => (f as Map)['mana_cost'] as String? ?? '').join(' // ');
+  }
+  return (faces.first as Map)['mana_cost'] as String? ?? '';
+}
+
 /// Name, unter dem die Karte geraten wird.
 String gameName(Map<String, dynamic> printing) {
   final name = printing['name'] as String;
@@ -125,6 +138,7 @@ GameCard toGameCard(Map<String, dynamic> p) {
     oracleId: p['oracle_id'] as String,
     name: gameName(p),
     manaValue: (p['cmc'] as num? ?? 0).toDouble(),
+    manaCost: manaCost(p),
     types: typeLine.types,
     subtypes: typeLine.subtypes,
     colors: colors,

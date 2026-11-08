@@ -184,6 +184,36 @@ void main() {
     });
   });
 
+  group('manaCost', () {
+    test('normale Karte', () {
+      expect(manaCost({...printing(), 'mana_cost': '{1}{B}{B}'}), '{1}{B}{B}');
+    });
+
+    test('doppelseitige Karte: Vorderseite', () {
+      final p = printing(layout: 'transform', faces: [
+        {'name': 'Front', 'mana_cost': '{U}', 'type_line': 'Creature'},
+        {'name': 'Back', 'mana_cost': '', 'type_line': 'Creature'},
+      ]);
+      expect(manaCost({...p, 'mana_cost': null}), '{U}');
+    });
+
+    test('Split-Karte: beide Hälften', () {
+      final p = printing(layout: 'split', faces: [
+        {'name': 'Fire', 'mana_cost': '{1}{R}', 'type_line': 'Instant'},
+        {'name': 'Ice', 'mana_cost': '{1}{U}', 'type_line': 'Instant'},
+      ]);
+      expect(manaCost(p), '{1}{R} // {1}{U}');
+    });
+
+    test('Land ohne Kosten', () {
+      expect(manaCost({...printing(typeLine: 'Land'), 'mana_cost': ''}), '');
+    });
+
+    test('landet im JSON als mc', () {
+      expect(toGameCard({...printing(), 'mana_cost': '{R}'}).toJson()['mc'], '{R}');
+    });
+  });
+
   test('GameCard.toJson schreibt ganze Manawerte als int', () {
     final card = toGameCard(printing(cmc: 3.0));
     expect(card.toJson()['mv'], 3);

@@ -36,7 +36,7 @@ sets/<code>.svg               Set-Symbole
 Kartenformat in `cards.json.gz`:
 
 ```json
-{"i": "<oracle_id>", "n": "Lightning Bolt", "mv": 1, "t": ["Instant"], "st": [],
+{"i": "<oracle_id>", "n": "Lightning Bolt", "mv": 1, "mc": "{R}", "t": ["Instant"], "st": [],
  "c": ["R"], "r": "common", "s": "lea", "d": "1993-08-05", "sf": "<scryfall_id>"}
 ```
 

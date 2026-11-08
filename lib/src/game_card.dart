@@ -5,6 +5,7 @@ class GameCard {
     required this.oracleId,
     required this.name,
     required this.manaValue,
+    this.manaCost = '',
     required this.types,
     required this.subtypes,
     required this.colors,
@@ -20,6 +21,10 @@ class GameCard {
 
   /// Manawert (`cmc`). Kann bei Sonderfällen ein Bruch sein.
   final double manaValue;
+
+  /// Gedruckte Manakosten der Vorderseite, z. B. `{1}{B}{B}`; leer bei
+  /// Karten ohne Kosten (Länder). Split-Karten: `{1}{R} // {1}{U}`.
+  final String manaCost;
 
   /// Super- und Kartentypen, z. B. `[Legendary, Creature]`.
   final List<String> types;
@@ -47,6 +52,7 @@ class GameCard {
         'mv': manaValue == manaValue.roundToDouble()
             ? manaValue.toInt()
             : manaValue,
+        'mc': manaCost,
         't': types,
         'st': subtypes,
         'c': colors,
