@@ -54,6 +54,16 @@ jobs:
             mkdir site
           fi
 
+      - name: Statische Seiten übernehmen (z. B. privacy.html)
+        id: pages
+        run: |
+          cp -r pages/. site/
+          if [ ! -d site/.git ] || [ -n "$(git -C site status --porcelain)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Datenpaket bauen
         id: build
         env:
@@ -68,7 +78,7 @@ jobs:
           dart run bin/build.dart "${args[@]}"
 
       - name: Veröffentlichen
-        if: steps.build.outputs.changed == 'true'
+        if: steps.build.outputs.changed == 'true' || steps.pages.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ steps.build.outputs.version }}
@@ -81,6 +91,6 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git commit -q -m "Kartendaten $VERSION"
+          git commit -q -m "Kartendaten ${VERSION:-unverändert}, Seiten aktualisiert"
           git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
-          echo "Veröffentlicht: $VERSION" >> "$GITHUB_STEP_SUMMARY"
+          echo "Veröffentlicht: ${VERSION:-nur Seiten}" >> "$GITHUB_STEP_SUMMARY"
