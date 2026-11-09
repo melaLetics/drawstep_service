@@ -35,7 +35,7 @@ class ScryfallClient {
       : _http = HttpClient()..userAgent = userAgent;
 
   static const userAgent =
-      'TopdeckedService/0.1 (+https://github.com/melaLetics/topdecked_service)';
+      'DrawstepService/0.1 (+https://github.com/melaLetics/drawstep_service)';
   static final apiBase = Uri.parse('https://api.scryfall.com/');
 
   final HttpClient _http;

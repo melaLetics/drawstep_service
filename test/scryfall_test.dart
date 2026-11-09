@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
-import 'package:topdecked_service/topdecked_service.dart';
+import 'package:drawstep_service/drawstep_service.dart';
 
 void main() {
   late Directory dir;
-  setUp(() => dir = Directory.systemTemp.createTempSync('topdecked_bulk_'));
+  setUp(() => dir = Directory.systemTemp.createTempSync('drawstep_bulk_'));
   tearDown(() => dir.deleteSync(recursive: true));
 
   const cards = [

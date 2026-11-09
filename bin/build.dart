@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:args/args.dart';
 import 'package:path/path.dart' as p;
-import 'package:topdecked_service/topdecked_service.dart';
+import 'package:drawstep_service/drawstep_service.dart';
 
 /// Baut ein neues Datenpaket aus den aktuellen Scryfall-Daten und legt es
 /// im Veröffentlichungsordner (`--site`) ab – aber nur, wenn sich etwas

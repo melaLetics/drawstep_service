@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:topdecked_service/topdecked_service.dart';
+import 'package:drawstep_service/drawstep_service.dart';
 
 /// Minimale Scryfall-Druckversion für Tests.
 Map<String, dynamic> printing({

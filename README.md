@@ -1,6 +1,6 @@
-# topdecked_service
+# drawstep_service
 
-Baut die Kartendaten und den Tageskarten-Zeitplan für die Android-App **Topdecked**
+Baut die Kartendaten und den Tageskarten-Zeitplan für die Android-App **Drawstep**
 aus den Bulk-Daten von [Scryfall](https://scryfall.com/docs/api/bulk-data) und
 veröffentlicht sie als statische Dateien über GitHub Pages.
 
@@ -46,14 +46,14 @@ Kartenformat in `cards.json.gz`:
 dart pub get
 dart test
 dart run bin/build.dart --site site --start 2026-11-10
-dart run bin/export_assets.dart --site site --to ../topdecked/assets
+dart run bin/export_assets.dart --site site --to ../drawstep/assets
 ```
 
 Für Releases den Grundbestand aus den **veröffentlichten** Daten übernehmen,
 damit App und Updates denselben Zeitplan haben (prüft alle Prüfsummen):
 
 ```
-dart run bin/export_assets.dart --pages --to ../topdecked/assets
+dart run bin/export_assets.dart --pages --to ../drawstep/assets
 ```
 
 Der Starttag wird nur beim ersten Lauf gebraucht. Bis zum Release lässt er sich
@@ -69,11 +69,11 @@ Einmalig einrichten:
 1. Workflow einmal manuell starten und dabei `start` setzen. Danach gibt es den
    Branch `gh-pages`.
 2. *Settings → Pages*: Source „Deploy from a branch“, Branch `gh-pages`, Ordner `/ (root)`.
-3. Die Daten sind dann unter `https://melaletics.github.io/topdecked_service/manifest.json` erreichbar.
+3. Die Daten sind dann unter `https://melaletics.github.io/drawstep_service/manifest.json` erreichbar.
 
 ## Hinweise
 
-Kartendaten und Bilder stammen von Scryfall. Topdecked is unofficial Fan Content
+Kartendaten und Bilder stammen von Scryfall. Drawstep is unofficial Fan Content
 permitted under the Fan Content Policy. Not approved/endorsed by Wizards.
 Portions of the materials used are property of Wizards of the Coast.
 ©Wizards of the Coast LLC.

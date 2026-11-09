@@ -5,16 +5,16 @@ import 'dart:typed_data' show BytesBuilder;
 import 'package:args/args.dart';
 import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as p;
-import 'package:topdecked_service/topdecked_service.dart';
+import 'package:drawstep_service/drawstep_service.dart';
 
 /// Kopiert ein Datenpaket als Grundbestand in die App.
 ///
 /// Aus dem lokalen Build-Ordner:
-///   dart run bin/export_assets.dart --site site --to ../topdecked/assets
+///   dart run bin/export_assets.dart --site site --to ../drawstep/assets
 ///
 /// Aus den veröffentlichten Daten (GitHub Pages) – für Releases, damit App
 /// und Updates garantiert denselben Zeitplan haben:
-///   dart run bin/export_assets.dart --pages --to ../topdecked/assets
+///   dart run bin/export_assets.dart --pages --to ../drawstep/assets
 ///
 /// Ergebnis:
 ///   assets/data/cards.json.gz, sets.json, daily.json, version.txt
@@ -24,7 +24,7 @@ Future<void> main(List<String> arguments) async {
     ..addOption('site', defaultsTo: 'site', help: 'Lokaler Veröffentlichungsordner.')
     ..addFlag('pages', negatable: false, help: 'Stattdessen von GitHub Pages laden.')
     ..addOption('pages-url',
-        defaultsTo: 'https://melaletics.github.io/topdecked_service/', help: 'Basis-URL der veröffentlichten Daten.')
+        defaultsTo: 'https://melaletics.github.io/drawstep_service/', help: 'Basis-URL der veröffentlichten Daten.')
     ..addOption('to', mandatory: true, help: 'assets-Ordner der App');
   final args = parser.parse(arguments);
 
@@ -99,7 +99,7 @@ class LocalSource extends Source {
 }
 
 class PagesSource extends Source {
-  PagesSource(this.base) : _client = HttpClient()..userAgent = 'TopdeckedService/0.1';
+  PagesSource(this.base) : _client = HttpClient()..userAgent = 'DrawstepService/0.1';
   final Uri base;
   final HttpClient _client;
 

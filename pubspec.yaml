@@ -1,5 +1,5 @@
-name: topdecked_service
-description: Baut die Kartendaten und den Tageskarten-Zeitplan für die Topdecked-App aus Scryfall-Bulk-Daten.
+name: drawstep_service
+description: Baut die Kartendaten und den Tageskarten-Zeitplan für die Drawstep-App aus Scryfall-Bulk-Daten.
 publish_to: 'none'
 version: 0.1.0
 

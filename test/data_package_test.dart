@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
-import 'package:topdecked_service/topdecked_service.dart';
+import 'package:drawstep_service/drawstep_service.dart';
 
 GameCard card(String id, String name, String set) => GameCard(
       oracleId: id,
@@ -56,7 +56,7 @@ void main() {
   });
 
   test('Site.publish schreibt Paket, Plan und Manifest mit Prüfsummen', () {
-    final dir = Directory.systemTemp.createTempSync('topdecked_site_');
+    final dir = Directory.systemTemp.createTempSync('drawstep_site_');
     addTearDown(() => dir.deleteSync(recursive: true));
     final site = Site(dir);
     final pkg = DataPackage(cards: cards, sets: sets, plan: plan);
@@ -82,7 +82,7 @@ void main() {
   });
 
   test('Site.prune behält die neuesten Versionen', () {
-    final dir = Directory.systemTemp.createTempSync('topdecked_prune_');
+    final dir = Directory.systemTemp.createTempSync('drawstep_prune_');
     addTearDown(() => dir.deleteSync(recursive: true));
     final site = Site(dir);
     for (final v in ['2026.10.01', '2026.10.08', '2026.10.08.2', '2026.10.15']) {

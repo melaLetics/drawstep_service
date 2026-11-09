@@ -1,4 +1,4 @@
-/// Datenaufbereitung für die Topdecked-App.
+/// Datenaufbereitung für die Drawstep-App.
 library;
 
 export 'src/card_rules.dart';

@@ -1,4 +1,4 @@
-/// Eine Karte, wie die Topdecked-App sie kennt: Daten des Erstdrucks,
+/// Eine Karte, wie die Drawstep-App sie kennt: Daten des Erstdrucks,
 /// reduziert auf die Felder, die das Spiel vergleicht.
 class GameCard {
   const GameCard({
