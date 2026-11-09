@@ -49,6 +49,13 @@ dart run bin/build.dart --site site --start 2026-11-10
 dart run bin/export_assets.dart --site site --to ../topdecked/assets
 ```
 
+Für Releases den Grundbestand aus den **veröffentlichten** Daten übernehmen,
+damit App und Updates denselben Zeitplan haben (prüft alle Prüfsummen):
+
+```
+dart run bin/export_assets.dart --pages --to ../topdecked/assets
+```
+
 Der Starttag wird nur beim ersten Lauf gebraucht. Bis zum Release lässt er sich
 mit `--reset-plan --start <datum>` ändern, danach nicht mehr.
 
