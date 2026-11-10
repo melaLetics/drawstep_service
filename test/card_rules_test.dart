@@ -16,6 +16,8 @@ Map<String, dynamic> printing({
   bool digital = false,
   bool promo = false,
   bool oversized = false,
+  List<String>? promoTypes,
+  Map<String, String>? legalities,
   List<Map<String, dynamic>>? faces,
   String id = 'id-1',
 }) =>
@@ -35,6 +37,8 @@ Map<String, dynamic> printing({
       'digital': digital,
       'promo': promo,
       'oversized': oversized,
+      if (promoTypes != null) 'promo_types': promoTypes,
+      if (legalities != null) 'legalities': legalities,
       if (faces != null) 'card_faces': faces,
     };
 
@@ -125,6 +129,35 @@ void main() {
     test('Token und Übergrößen zählen nicht', () {
       expect(isEligiblePrinting(printing(layout: 'token', typeLine: 'Token Creature — Goblin')), isFalse);
       expect(isEligiblePrinting(printing(oversized: true)), isFalse);
+    });
+  });
+
+  group('Spaßkarten außerhalb der Un-Sets', () {
+    const never = {'vintage': 'not_legal', 'legacy': 'not_legal', 'commander': 'not_legal'};
+
+    test('Playtest-Karten (Mystery Booster 2) zählen nicht', () {
+      expect(
+        isEligiblePrinting(printing(set: 'mb2', setType: 'masters', promoTypes: ['playtest'])),
+        isFalse,
+      );
+      expect(isEligiblePrinting(printing(set: 'mb2', setType: 'masters', promoTypes: [])), isTrue);
+    });
+
+    test('nirgends zugelassene Karten fliegen raus, gebannte nicht', () {
+      expect(isEligiblePrinting(printing(set: 'sld', setType: 'box', legalities: never)), isFalse);
+      expect(
+        isEligiblePrinting(printing(legalities: {'vintage': 'banned', 'legacy': 'banned', 'commander': 'not_legal'})),
+        isTrue,
+      );
+      expect(isEligiblePrinting(printing(legalities: {'vintage': 'legal', 'legacy': 'not_legal'})), isTrue);
+      expect(isEligiblePrinting(printing()), isTrue, reason: 'ohne Angaben nicht ausschließen');
+    });
+
+    test('Conspiracy-Karten bleiben trotz fehlender Zulassung drin', () {
+      expect(
+        isEligiblePrinting(printing(typeLine: 'Conspiracy', set: 'cns', setType: 'draft_innovation', legalities: never)),
+        isTrue,
+      );
     });
   });
 

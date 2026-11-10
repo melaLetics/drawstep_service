@@ -12,8 +12,10 @@ Die App bringt einen Grundbestand als Asset mit und lädt neuere Pakete über
 1. Lädt die Scryfall-Bulk-Datei `default_cards` (in `.cache/`).
 2. Filtert: nur Papier-Druckversionen; ohne Archenemy-Schemes, Planes,
    Phenomenons, Un-Karten (inkl. Unfinity und Playtest-Karten), Tokens,
-   Emblems, Vanguard, Dungeons, Art-Series und Übergrößen. Conspiracy-Karten
-   bleiben drin.
+   Emblems, Vanguard, Dungeons, Art-Series und Übergrößen. Ebenfalls raus:
+   Playtest-Karten in normalen Sets (z. B. Mystery Booster 2) und Karten, die
+   in keinem Format zugelassen sind (z. B. Secret-Lair-Spaßkarten).
+   Conspiracy-Karten bleiben drin.
 3. Bestimmt pro Karte (`oracle_id`) den Erstdruck: frühestes Datum,
    Promo-Sets zählen nie. Karten, die es nur als Promo gibt (z. B.
    Convention-Karten), fliegen raus.

@@ -114,6 +114,20 @@ String gameName(Map<String, dynamic> printing) {
   return _frontFace(printing)['name'] as String? ?? name.split(' // ').first;
 }
 
+/// Promo-Typen, deren Druckversionen nie zählen: Playtest-Karten (z. B. aus
+/// Mystery Booster 2) liegen in normalen Sets, sind aber Spaßkarten.
+const excludedPromoTypes = {'playtest'};
+
+/// In keinem Format zugelassen (alle Formate `not_legal`) – das trifft
+/// Un-artige Spaßkarten auch außerhalb der Un-Sets, z. B. Secret-Lair-Karten
+/// mit Eichel-Stempel. Gebannte Karten sind `banned` und bleiben drin.
+/// Fehlen die Angaben, gilt die Karte nicht als ausgeschlossen.
+bool isNeverLegal(Map<String, dynamic> p) {
+  final legalities = p['legalities'];
+  if (legalities is! Map || legalities.isEmpty) return false;
+  return legalities.values.every((v) => v == 'not_legal');
+}
+
 /// Zählt diese Druckversion überhaupt (Papier, keine Sonderkarte)?
 bool isEligiblePrinting(Map<String, dynamic> p) {
   if (p['object'] != 'card') return false;
@@ -122,8 +136,12 @@ bool isEligiblePrinting(Map<String, dynamic> p) {
   if (p['oversized'] == true) return false;
   if (excludedLayouts.contains(p['layout'])) return false;
   if (excludedSetTypes.contains(p['set_type'])) return false;
+  final promoTypes = p['promo_types'];
+  if (promoTypes is List && promoTypes.any(excludedPromoTypes.contains)) return false;
   final types = parseTypeLine(frontTypeLine(p)).types;
   if (types.any(excludedTypes.contains)) return false;
+  // Conspiracy-Karten sind nirgends zugelassen, sollen aber drinbleiben.
+  if (isNeverLegal(p) && !types.contains('Conspiracy')) return false;
   return true;
 }
 
