@@ -64,14 +64,17 @@ class ScryfallClient {
     return jsonDecode(body) as Map<String, dynamic>;
   }
 
-  /// Sucht die aktuelle Bulk-Datei `default_cards`.
+  /// Sucht die aktuelle Bulk-Datei `default_cards` (englische Drucke).
+  Future<BulkInfo> defaultCardsInfo() => bulkInfo('default_cards');
+
+  /// Sucht die aktuelle Bulk-Datei [type], z. B. `all_cards` (alle Sprachen).
   /// Bietet Scryfall eine JSONL-Variante an, wird diese bevorzugt.
-  Future<BulkInfo> defaultCardsInfo() async {
+  Future<BulkInfo> bulkInfo(String type) async {
     final json = await _getJson(apiBase.resolve('bulk-data'));
     final entries = (json['data'] as List).cast<Map<String, dynamic>>();
     final entry = entries.firstWhere(
-      (e) => e['type'] == 'default_cards',
-      orElse: () => throw StateError('Keine Bulk-Datei "default_cards" gefunden'),
+      (e) => e['type'] == type,
+      orElse: () => throw StateError('Keine Bulk-Datei "$type" gefunden'),
     );
     final uri = (entry['jsonl_download_uri'] ?? entry['download_uri']) as String;
     return BulkInfo(Uri.parse(uri), entry['updated_at'] as String? ?? '');
@@ -146,7 +149,10 @@ Future<bool> isGzipFile(File file) async {
 /// zu dekodieren. Scryfall schreibt jede Karte in eine eigene Zeile
 /// (JSON-Array mit einer Karte pro Zeile oder JSONL); für den seltenen Fall
 /// einer einzeiligen Datei gibt es einen Rückfall auf `jsonDecode`.
-Stream<Map<String, dynamic>> readBulkCards(File file) async* {
+///
+/// [lineFilter] überspringt Zeilen schon vor dem Dekodieren – bei der großen
+/// Datei `all_cards` spart das viel Zeit.
+Stream<Map<String, dynamic>> readBulkCards(File file, {bool Function(String line)? lineFilter}) async* {
   Stream<List<int>> bytes = file.openRead();
   if (await isGzipFile(file)) bytes = bytes.transform(gzip.decoder);
   final lines = bytes.transform(utf8.decoder).transform(const LineSplitter());
@@ -160,6 +166,7 @@ Stream<Map<String, dynamic>> readBulkCards(File file) async* {
       }
       continue;
     }
+    if (lineFilter != null && !lineFilter(line)) continue;
     if (line.endsWith(',')) line = line.substring(0, line.length - 1);
     yield jsonDecode(line) as Map<String, dynamic>;
   }

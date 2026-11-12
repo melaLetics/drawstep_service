@@ -32,6 +32,15 @@ void main() {
     expect(await names(f), ['Lightning Bolt', 'Fire // Ice']);
   });
 
+  test('lineFilter überspringt Zeilen vor dem Dekodieren', () async {
+    final f = File(p.join(dir.path, 'cards.jsonl'))
+      ..writeAsStringSync('${cards.map(jsonEncode).join('\n')}\nkein json\n');
+    final result = [
+      await for (final c in readBulkCards(f, lineFilter: (l) => l.contains('Bolt'))) c['name'],
+    ];
+    expect(result, ['Lightning Bolt']);
+  });
+
   test('liest einzeiliges JSON-Array', () async {
     final f = File(p.join(dir.path, 'one.json'))..writeAsStringSync(jsonEncode(cards));
     expect(await names(f), ['Lightning Bolt', 'Fire // Ice']);

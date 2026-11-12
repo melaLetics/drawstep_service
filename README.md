@@ -16,12 +16,15 @@ Die App bringt einen Grundbestand als Asset mit und lädt neuere Pakete über
    Playtest-Karten in normalen Sets (z. B. Mystery Booster 2) und Karten, die
    in keinem Format zugelassen sind (z. B. Secret-Lair-Spaßkarten).
    Conspiracy-Karten bleiben drin.
-3. Bestimmt pro Karte (`oracle_id`) den Erstdruck: frühestes Datum,
+3. Ergänzt deutsche Kartennamen aus der Bulk-Datei `all_cards` (Feld `nd`,
+   nur wenn er vom englischen abweicht; bei mehreren deutschen Drucken der
+   neueste). `--skip-german` lässt den großen Download weg.
+4. Bestimmt pro Karte (`oracle_id`) den Erstdruck: frühestes Datum,
    Promo-Sets zählen nie. Karten, die es nur als Promo gibt (z. B.
    Convention-Karten), fliegen raus.
-4. Schreibt den Zeitplan fort: Alle Tage bis heute + 30 bleiben unverändert,
+5. Schreibt den Zeitplan fort: Alle Tage bis heute + 30 bleiben unverändert,
    neue Karten werden danach zufällig eingefügt.
-5. Veröffentlicht nur, wenn sich der Inhalt geändert hat.
+6. Veröffentlicht nur, wenn sich der Inhalt geändert hat.
 
 ## Ergebnis (`site/` bzw. Branch `gh-pages`)
 
@@ -39,7 +42,7 @@ Kartenformat in `cards.json.gz`:
 
 ```json
 {"i": "<oracle_id>", "n": "Lightning Bolt", "mv": 1, "mc": "{R}", "t": ["Instant"], "st": [],
- "c": ["R"], "r": "common", "s": "lea", "d": "1993-08-05", "sf": "<scryfall_id>"}
+ "c": ["R"], "r": "common", "s": "lea", "d": "1993-08-05", "sf": "<scryfall_id>", "nd": "Blitzschlag"}
 ```
 
 ## Lokal ausführen

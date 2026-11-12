@@ -22,6 +22,7 @@ Future<void> main(List<String> arguments) async {
     ..addOption('today', help: 'Heutiges Datum überschreiben (nur für Tests).')
     ..addOption('keep', defaultsTo: '4', help: 'So viele alte Pakete bleiben liegen.')
     ..addFlag('skip-icons', negatable: false, help: 'Keine Set-Symbole laden.')
+    ..addFlag('skip-german', negatable: false, help: 'Keine deutschen Namen laden (spart den großen Download von all_cards).')
     ..addFlag('force', negatable: false, help: 'Auch ohne Änderung veröffentlichen.')
     ..addFlag('help', abbr: 'h', negatable: false);
 
@@ -69,11 +70,28 @@ Future<void> main(List<String> arguments) async {
     await for (final printing in readBulkCards(bulkFile)) {
       collector.add(printing);
     }
-    final cards = collector.build();
+    var cards = collector.build();
     stdout.writeln('  ${collector.seen} Druckversionen, ${collector.eligible} zulässig, '
         '${cards.length} Karten');
     if (cards.length < 20000) {
       _fail('Nur ${cards.length} Karten – das sieht nach einem Fehler aus, breche ab.');
+    }
+
+    if (!args.flag('skip-german')) {
+      stdout.writeln('Scryfall: suche Bulk-Datei "all_cards" für die deutschen Namen …');
+      final all = await client.bulkInfo('all_cards');
+      stdout.writeln('  Stand ${all.updatedAt}, lade ${all.downloadUri}');
+      final allFile = await client.downloadToCache(all.downloadUri, Directory(args.option('cache')!));
+      final names = LocalizedNameCollector(lang: 'de');
+      await for (final printing in readBulkCards(allFile, lineFilter: names.mightMatch)) {
+        names.add(printing);
+      }
+      cards = names.apply(cards);
+      final withDe = cards.where((c) => c.nameDe != null).length;
+      stdout.writeln('  ${names.length} deutsche Namen gefunden, $withDe Karten mit eigenem deutschen Namen');
+      if (withDe < 5000) {
+        _fail('Nur $withDe deutsche Namen – das sieht nach einem Fehler aus, breche ab.');
+      }
     }
 
     stdout.writeln('Lade Set-Liste …');

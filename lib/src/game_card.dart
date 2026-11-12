@@ -13,6 +13,7 @@ class GameCard {
     required this.setCode,
     required this.released,
     required this.scryfallId,
+    this.nameDe,
   });
 
   /// Stabile Scryfall-`oracle_id`, gleich über alle Druckversionen.
@@ -45,6 +46,25 @@ class GameCard {
   /// Scryfall-ID der Druckversion; daraus baut die App die Bild-URL.
   final String scryfallId;
 
+  /// Deutscher Kartenname, falls es die Karte auf Deutsch gibt und er sich
+  /// vom englischen unterscheidet.
+  final String? nameDe;
+
+  GameCard withNameDe(String? value) => GameCard(
+        oracleId: oracleId,
+        name: name,
+        manaValue: manaValue,
+        manaCost: manaCost,
+        types: types,
+        subtypes: subtypes,
+        colors: colors,
+        rarity: rarity,
+        setCode: setCode,
+        released: released,
+        scryfallId: scryfallId,
+        nameDe: value,
+      );
+
   /// Kompaktes JSON mit kurzen Schlüsseln für das Datenpaket.
   Map<String, Object> toJson() => {
         'i': oracleId,
@@ -60,5 +80,6 @@ class GameCard {
         's': setCode,
         'd': released,
         'sf': scryfallId,
+        if (nameDe != null) 'nd': nameDe!,
       };
 }
