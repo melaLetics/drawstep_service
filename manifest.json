@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "version": "2026.11.23",
+  "minAppVersion": "1.0.0",
+  "generatedAt": "2026-11-23T14:48:17.617860Z",
+  "contentHash": "8842361225f98de37a820c269e0179b8168e2a49ab828c9f41ad955aacd650c8",
+  "cardCount": 32564,
+  "files": {
+    "cards": {
+      "path": "data/2026.11.23/cards.json.gz",
+      "size": 2550716,
+      "sha256": "7bb103fa7a9abf84da0a21ae93db710de04b631d716435b11ec73fa3b2b64900"
+    },
+    "sets": {
+      "path": "data/2026.11.23/sets.json",
+      "size": 14085,
+      "sha256": "6a52849fe322bbe3bd9044c2bd9226b3edf653df262b7a0e38c763ed2ac7895e"
+    },
+    "daily": {
+      "path": "data/2026.11.23/daily.json",
+      "size": 184308,
+      "sha256": "6018c12476e19024c46461d9e5ed4cf42a96df67f81c35b90e6f94c7e91d3dfa"
+    }
+  },
+  "setIcons": "sets/"
+}
